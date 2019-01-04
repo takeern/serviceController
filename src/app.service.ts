@@ -22,7 +22,6 @@ export class AppService {
     async onModuleInit() {
 		try {
 			const m = await this.client.connect();
-			console.log(m);
 		} catch(e) {
 			console.log(e)
 		}
@@ -41,7 +40,12 @@ export class AppService {
 			},
 		};
 		const k = this.client.send(pattern, payload);
-		return k;
+		return new Promise((reslove, reject) => {
+			k.subscribe({
+				next: (v) => reslove(v),
+				error: (err) => reject(err),
+			})
+		});
 	}
 
 	getBookList(config: Iconfig) {
@@ -59,7 +63,12 @@ export class AppService {
 			},
 		};
 		const k = this.client.send(pattern, payload);
-		return k;
+		return new Promise((reslove, reject) => {
+			k.subscribe({
+				next: (v: any) => reslove(v),
+				error: (err) => reject(err),
+			})
+		});
 	}
 
 	getBookData(config: Iconfig) {

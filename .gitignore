@@ -190,3 +190,4 @@ dist/
 release/
 .history
 distTs/
+logs/

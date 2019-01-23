@@ -1,6 +1,6 @@
 import { Controller, Get,  Req, Res, Param, Post, Query, Body, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
-import { RedisService } from './services/redis.services';
+import { RedisService } from './services/redis.service';
 import { SpiderOrigin } from './interface/CONFIG.STATE';
 
 interface Iconfig {

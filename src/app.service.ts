@@ -50,11 +50,6 @@ export class AppService {
 
 	getBookList(config: Iconfig) {
 		const pattern = { cmd: 'spider' };
-		if (!config.bookName && !config.bookNumber) {
-			return {
-				msg: `bookName , bookNumber 至少上传一个`
-			}
-		}
 		const payload =  {
 			type: 'getBookList',
     		playload: {
@@ -73,16 +68,6 @@ export class AppService {
 
 	getBookData(config: Iconfig) {
 		const pattern = { cmd: 'spider' };
-		if (!config.bookName && !config.bookNumber) {
-			return {
-				msg: `bookName , bookNumber 至少上传一个`
-			}
-		}
-		if (!config.bookHref) {
-			return {
-				msg: `bookHref 必须传`
-			}
-		}
 		const payload =  {
 			type: 'getBookData',
     		playload: {

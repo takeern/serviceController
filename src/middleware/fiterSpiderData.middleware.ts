@@ -1,6 +1,7 @@
-import { Middleware, NestMiddleware } from '@nestjs/common';
+import { NestMiddleware } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
-@Middleware()
+@Injectable()
 export class FiterDataMiddleware implements NestMiddleware {
     fiterData(data, path) {
         let msg;
@@ -11,22 +12,16 @@ export class FiterDataMiddleware implements NestMiddleware {
                 }
                 break;
             }
-            case ('/getBookList'): {
-                if (!data.bookName && !data.bookNumber) {
-                    msg = 'bookName,bookNumber is undefined';
-                }
-                break;
-            }
             case ('/getBookData'): {
-                if (!data.bookName && !data.bookNumber) {
-                    msg = 'bookName,bookNumber is undefined';
-                }
                 if (!data.bookHref) {
                     msg = 'bookHref is undefined';
                 }
                 break;
             }
             default: {
+                if (!data.bookNumber) {
+                    msg = 'bookNumber is undefined';
+                }
                 break;
             }
         }

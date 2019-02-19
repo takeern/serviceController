@@ -74,14 +74,35 @@ export class AppController {
         }
         (<Iconfig>config).bookHref = qs.bookHref;
         const res = await this.appService.getBookData(<Iconfig>config);
+        
         if (shouldRedisSet) {
             this.redisService.setBookNumber('ixspider', qs.bookName, (<any>res).bookNumber);
         }
+        console.log(res);
         return res;
     }
     @Get('getBookAllData')
     async getBookAllData(@Query() qs) {
         const b = await this.appService.getBookAllData(qs);
         return b;
+    }
+    @Get('getBookInitData')
+    async getBookInitData(@Query() qs) {
+        console.log(qs);
+        let table = await this.getBookList(qs);
+        let bookData = null;
+        if (table && (<any>table).bookList && (<any>table).bookList.length !== 0) {
+            bookData = await this.getBookData({
+                bookHref: (<any>table).bookList[0].href,
+                bookNumber: qs.bookNumber,
+            });
+        } else {
+            table = 'can not find'
+        }
+        return {
+            code: 200,
+            bookData,
+            table
+        };
     }
 }

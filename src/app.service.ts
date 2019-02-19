@@ -57,11 +57,14 @@ export class AppService {
 				bookNumber: config.bookNumber
 			},
 		};
+		console.log(payload);
 		const k = this.client.send(pattern, payload);
 		return new Promise((reslove, reject) => {
 			k.subscribe({
 				next: (v: any) => reslove(v),
-				error: (err) => reject(err),
+				error: (err) => {
+					reslove(null);
+				},
 			})
 		});
 	}
@@ -77,7 +80,12 @@ export class AppService {
 			},
 		};
 		const k = this.client.send(pattern, payload);
-		return k;
+		return new Promise((reslove, reject) => {
+			k.subscribe({
+				next: (v: any) => reslove(v),
+				error: (err) => reject(err),
+			})
+		});
 	}
 
 	getBookAllData(config: Iconfig) {

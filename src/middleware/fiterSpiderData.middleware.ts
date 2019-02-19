@@ -30,6 +30,15 @@ export class FiterDataMiddleware implements NestMiddleware {
 
     resolve(): (req, res, next) => void {
         return (req, res, next) => {
+            res.header('Access-Control-Allow-Origin', "*");
+            // setTimeout(() => {
+            //     const json = {
+            //         code: -1,
+            //         msg: 'time out',
+            //     };
+            //     res.send(JSON.stringify(json));
+            //     res.end();
+            // }, 4000)
             const msg: string = this.fiterData(req.query, req.path); 
             if (msg) {
                 const json = {

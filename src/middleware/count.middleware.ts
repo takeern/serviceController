@@ -7,7 +7,6 @@ import { LogService } from '../services/log.service';
 export class CountMiddleware implements NestMiddleware {
     constructor(private readonly logService: LogService) {
         this.logService = logService;
-        console.log(logService);
     }
     resolve () {
         return (req, res, next) => {

@@ -8,7 +8,7 @@ interface Iconfig {
 }
 
 @Injectable()
-export class AppService {
+export class SpiderService {
     public client: any;
     constructor() {
         this.client = ClientProxyFactory.create({
@@ -53,7 +53,6 @@ export class AppService {
 		const payload =  {
 			type: 'getBookList',
     		playload: {
-				bookName: config.bookName || '大道朝天',
 				bookNumber: config.bookNumber
 			},
 		};
@@ -88,21 +87,16 @@ export class AppService {
 		});
 	}
 
-	getBookAllData(config: Iconfig) {
+	getBookAllData(config: Iconfig, bookList) {
 		const pattern = { cmd: 'spider' };
 		const payload =  {
 			type: 'getBookAllData',
-    		playload: {
-				bookName: config.bookName || '大道朝天',
-				bookNumber: config.bookNumber
+			playload: {
+				bookNumber: config.bookNumber,
+				bookList,
 			},
 		};
 		const k = this.client.send(pattern, payload);
-		// k.subscribe({
-		// 	next: (v: any) => console.dir(v),
-		// 	error: (err) => console.log(err),
-		// 	complete: () => console.log('done'),
-		// })
 		return k;
 	}
 }

@@ -1,7 +1,7 @@
 import { Controller, Get,  Req, Res, Param, Post, Query, Body, HttpStatus } from '@nestjs/common';
-import { AppService } from './app.service';
-import { RedisService } from './services/redis.service';
-import { SpiderOrigin } from './interface/CONFIG.STATE';
+import { SpiderService } from '../services/spider.service';
+import { RedisService } from '../services/redis.service';
+import { SpiderOrigin } from '../interface/CONFIG.STATE';
 
 interface Iconfig {
 	bookName?: string;
@@ -12,7 +12,7 @@ interface Iconfig {
 @Controller()
 export class AppController {
     constructor(
-        private readonly appService: AppService,
+        private readonly appService: SpiderService,
         private readonly redisService: RedisService
         ) {}
 
@@ -78,17 +78,11 @@ export class AppController {
         if (shouldRedisSet) {
             this.redisService.setBookNumber('ixspider', qs.bookName, (<any>res).bookNumber);
         }
-        console.log(res);
         return res;
     }
-    @Get('getBookAllData')
-    async getBookAllData(@Query() qs) {
-        const b = await this.appService.getBookAllData(qs);
-        return b;
-    }
+    
     @Get('getBookInitData')
     async getBookInitData(@Query() qs) {
-        console.log(qs);
         let table = await this.getBookList(qs);
         let bookData = null;
         if (table && (<any>table).bookList && (<any>table).bookList.length !== 0) {

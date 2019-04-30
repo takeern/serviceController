@@ -21,11 +21,13 @@
     "webpack": "webpack --config webpack.config.js"
   },
   "dependencies": {
+    "@grpc/proto-loader": "^0.5.0",
     "@nestjs/common": "^5.4.0",
     "@nestjs/core": "^5.4.0",
     "@nestjs/microservices": "^5.5.0",
     "@nestjs/websockets": "^5.7.3",
     "bluebird": "^3.5.3",
+    "grpc": "^1.20.2",
     "heapdump": "^0.3.12",
     "https-proxy-agent": "^2.2.1",
     "node-memwatch": "^1.0.1",

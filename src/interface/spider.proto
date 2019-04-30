@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package spider;
+
+service BookSpider {
+    rpc getBookData(bookMeta) returns (bookData) {}
+}
+
+message bookMeta {
+    string bookName = 1;
+}
+
+message bookData {
+  int32 id = 1;
+  string bookData = 2;
+}

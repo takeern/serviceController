@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Transport, ClientProxyFactory } from '@nestjs/microservices';
+import { Transport, ClientProxyFactory, GrpcMethod } from '@nestjs/microservices';
 
 interface Iconfig {
 	bookName?: string;
 	bookNumber?: string;
 	bookHref?: string;
 }
+
 
 @Injectable()
 export class SpiderService {
@@ -82,11 +83,10 @@ export class SpiderService {
 		return new Promise((reslove, reject) => {
 			k.subscribe({
 				next: (v: any) => {
-					console.log(v);
+					v.bookData = String.fromCharCode.apply(null, v.bookData);
 					reslove(v);
 				},
 				error: (err) => reject(err),
-				complete: () => console.log('complete'),
 			})
 		});
 	}

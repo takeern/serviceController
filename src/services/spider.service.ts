@@ -81,8 +81,12 @@ export class SpiderService {
 		const k = this.client.send(pattern, payload);
 		return new Promise((reslove, reject) => {
 			k.subscribe({
-				next: (v: any) => reslove(v),
+				next: (v: any) => {
+					console.log(v);
+					reslove(v);
+				},
 				error: (err) => reject(err),
+				complete: () => console.log('complete'),
 			})
 		});
 	}

@@ -8,7 +8,7 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
   app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()));
-  await app.listen(8082, '0.0.0.0');
+  await app.listen(8083, '0.0.0.0');
 
   if (module.hot) {
     module.hot.accept();

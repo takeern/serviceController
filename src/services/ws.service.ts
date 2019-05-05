@@ -103,15 +103,21 @@ export class DownloadService {
                             books.push(book);
                         }
 
-                        if (!timeId) {
-                            timeId = setInterval(() => {
-                                if (books.length !== 0) {
-                                    console.log('send');
-                                    books = Array.prototype.concat.apply([], books);
-                                    client.send(this.wsDataWrapper('bookData', books));
-                                    books.length = 0;
-                                }
-                            }, 1000)
+                        // if (!timeId) {
+                        //     timeId = setInterval(() => {
+                        //         if (books.length !== 0) {
+                        //             console.log('send');
+                        //             books = Array.prototype.concat.apply([], books);
+                        //             client.send(this.wsDataWrapper('bookData', books));
+                        //             books.length = 0;
+                        //         }
+                        //     }, 1000)
+                        // }
+                        if (books.length !== 0) {
+                            console.log('send');
+                            books = Array.prototype.concat.apply([], books);
+                            client.send(this.wsDataWrapper('bookData', books));
+                            books.length = 0;
                         }
                     }
                 },
@@ -126,7 +132,7 @@ export class DownloadService {
                         tableData: stash,
                         tableLen: stash.length,
                     });
-                    clearInterval(timeId);
+                    // clearInterval(timeId);
                     client.send(this.wsDataWrapper('bookData', book));
                     client.send(this.wsDataWrapper('bookState', listState));
                     console.log(sum);

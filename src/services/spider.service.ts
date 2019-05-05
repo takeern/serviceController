@@ -43,7 +43,10 @@ export class SpiderService {
 		const k = this.client.send(pattern, payload);
 		return new Promise((reslove, reject) => {
 			k.subscribe({
-				next: (v) => reslove(v),
+				next: (v) => {
+					const data = JSON.parse(String.fromCharCode.apply(null, v));
+					reslove(data);
+				},
 				error: (err) => reject(err),
 			})
 		});
@@ -61,7 +64,10 @@ export class SpiderService {
 		const k = this.client.send(pattern, payload);
 		return new Promise((reslove, reject) => {
 			k.subscribe({
-				next: (v: any) => reslove(v),
+				next: (v: any) => {
+					const data = JSON.parse(String.fromCharCode.apply(null, v));
+					reslove(data);
+				},
 				error: (err) => {
 					reslove(null);
 				},

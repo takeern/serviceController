@@ -9,12 +9,12 @@ const path = require('path');
 declare const module: any;
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync('./secrets/private-key.key'),
-    cert: fs.readFileSync('./secrets/public-certificate.pem'),
-  };
+  // const httpsOptions = {
+  //   key: fs.readFileSync('./secrets/private-key.key'),
+  //   cert: fs.readFileSync('./secrets/public-certificate.pem'),
+  // };
   const app = await NestFactory.create(ApplicationModule, {
-    httpsOptions,
+    // httpsOptions,
   });
   app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()));
   await app.listen(8083, '0.0.0.0');

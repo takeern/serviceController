@@ -16,6 +16,7 @@ export class SpiderService {
 				transport: Transport.TCP,
 					options: {
 						port: 5000,
+						host: '47.103.12.134',
 					},
 				});
     }

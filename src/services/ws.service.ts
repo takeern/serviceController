@@ -49,7 +49,6 @@ export class DownloadService {
                 next: (v: IData) => {
                     const { data, type } = v;
                     if (type === 'test' && data.type === 'Buffer') {
-                        console.log(data.data.length);
                         sum += data.data.length;
                         const book: Array<any> = [];
                         const tableIndex = []; // 章节索引
@@ -114,7 +113,6 @@ export class DownloadService {
                         //     }, 1000)
                         // }
                         if (books.length !== 0) {
-                            console.log('send');
                             books = Array.prototype.concat.apply([], books);
                             client.send(this.wsDataWrapper('bookData', books));
                             books.length = 0;
@@ -135,8 +133,6 @@ export class DownloadService {
                     // clearInterval(timeId);
                     client.send(this.wsDataWrapper('bookData', book));
                     client.send(this.wsDataWrapper('bookState', listState));
-                    console.log(sum);
-                    console.log('done');
                 },
             })
         }

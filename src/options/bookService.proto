@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package book;
+
+service BookService {
+    rpc GetBookNumber (GetBookNumberReq) returns (GetBookNumberRes) {}
+    // rpc GetBookList (GetBookListReq) returns (GetBookListRes) {}
+}
+
+message GetBookNumberReq {
+    string BookName = 1;
+}
+
+message SearchResult {
+    string BookName = 1;
+    int32 BookNumber = 2;
+    bool BookState = 3;
+    string BookIntro = 4;
+}
+
+message GetBookNumberRes {
+    repeated SearchResult  SearchResults = 1;
+}
+
+// message GetBookListReq {
+//     int32 bookNumber = 1;
+// }
+
+// message GetBookListRes {
+
+// }
+
+// message Booklist {
+
+// }

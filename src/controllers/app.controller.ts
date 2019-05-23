@@ -1,7 +1,14 @@
-import { Controller, Get,  Req, Res, Param, Post, Query, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Get, OnModuleInit, Query, Body, HttpStatus } from '@nestjs/common';
 import { SpiderService } from '../services/spider.service';
 import { RedisService } from '../services/redis.service';
 import { SpiderOrigin } from '../interface/CONFIG.STATE';
+import { grpcClientOptions } from '../options/grpc-client.options';
+import {
+    Client,
+    GrpcMethod,
+    ClientGrpc,
+} from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
 interface Iconfig {
 	bookName?: string;
@@ -9,13 +16,22 @@ interface Iconfig {
 	bookHref?: string;
 }
 
+interface BookService {
+    getBookNumber(data: { bookNumber: number }): Observable<any>;
+}
+
 @Controller()
-export class AppController {
+export class AppController implements OnModuleInit {
+    @Client(grpcClientOptions) private readonly client: ClientGrpc;
+    private bookService: BookService;
     constructor(
         private readonly appService: SpiderService,
-        private readonly redisService: RedisService
+        private readonly redisService: RedisService,
         ) {}
 
+    onModuleInit() {
+        this.bookService = this.client.getService<BookService>('bookService');
+    }
     async fiterData (qs: Iconfig) {
         if (qs.bookNumber) {
             return {
@@ -36,6 +52,13 @@ export class AppController {
     @Get()
     getHello(@Query() qu) {
         return this.appService.getHello();
+    }
+
+    @Get('grpcTest')
+    getBookNumber1(@Query() qs) {
+        const res = this.bookService.getBookNumber({bookNumber: qs.bookNumber});
+        console.log(res);
+        return res;
     }
 
     @Get('getBookNumber')

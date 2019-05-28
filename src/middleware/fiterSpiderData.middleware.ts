@@ -18,6 +18,9 @@ export class FiterDataMiddleware implements NestMiddleware {
                 }
                 break;
             }
+            case ('/grpcTest'): {
+                break;
+            }
             default: {
                 if (!data.bookNumber) {
                     msg = 'bookNumber is undefined';

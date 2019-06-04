@@ -1,35 +1,22 @@
 syntax = "proto3";
 
-package book;
+package grpc;
 
-service BookService {
-    rpc GetBookNumber (GetBookNumberReq) returns (GetBookNumberRes) {}
-    // rpc GetBookList (GetBookListReq) returns (GetBookListRes) {}
+service Book {
+    rpc GetBookDesc (GetBookDescReq) returns (GetBookDescResp) {}
 }
 
-message GetBookNumberReq {
+message GetBookDescReq {
     string BookName = 1;
 }
 
-message SearchResult {
+message BookDesc {
     string BookName = 1;
-    int32 BookNumber = 2;
-    bool BookState = 3;
-    string BookIntro = 4;
+    string BookState = 2;
+    string BookIntro = 3;
+    string BookNumber = 4;
 }
 
-message GetBookNumberRes {
-    repeated SearchResult  SearchResults = 1;
+message GetBookDescResp {
+    repeated BookDesc BooksDesc = 1;
 }
-
-// message GetBookListReq {
-//     int32 bookNumber = 1;
-// }
-
-// message GetBookListRes {
-
-// }
-
-// message Booklist {
-
-// }

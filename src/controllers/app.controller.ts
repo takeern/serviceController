@@ -17,7 +17,7 @@ interface Iconfig {
 }
 
 interface BookService {
-    getBookNumber(data: { BookName: string }): Observable<any>;
+    getBookDesc(data: { BookName: string }): Observable<any>;
 }
 
 @Controller()
@@ -30,7 +30,7 @@ export class AppController implements OnModuleInit {
         ) {}
 
     onModuleInit() {
-        this.bookService = this.client.getService<BookService>('BookService');
+        this.bookService = this.client.getService<BookService>('Book');
     }
     async fiterData (qs: Iconfig) {
         if (qs.bookNumber) {
@@ -56,7 +56,7 @@ export class AppController implements OnModuleInit {
 
     @Get('grpcTest')
     getBookNumber1(@Query() qs) {
-        const res = this.bookService.getBookNumber({BookName: qs.bookName});
+        const res = this.bookService.getBookDesc({BookName: qs.bookName});
         console.log(res);
         return res;
     }

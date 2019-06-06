@@ -18,6 +18,8 @@ interface Iconfig {
 
 interface BookService {
     getBookDesc(data: { BookName: string }): Observable<any>;
+    getBookList(data: { BookNumber: string }): Observable<any>;
+    getBookData(data: { BookNumber: string, BookHref: string }): Observable<any>;
 }
 
 @Controller()
@@ -54,9 +56,23 @@ export class AppController implements OnModuleInit {
         return this.appService.getHello();
     }
 
-    @Get('grpcTest')
+    @Get('grpc/getBookDesc')
     getBookNumber1(@Query() qs) {
         const res = this.bookService.getBookDesc({BookName: qs.bookName});
+        console.log(res);
+        return res;
+    }
+
+    @Get('grpc/getBookData')
+    getBookData1(@Query() qs) {
+        const res = this.bookService.getBookData({BookNumber: qs.bookNumber, BookHref: qs.bookHref});
+        console.log(res);
+        return res;
+    }
+
+    @Get('grpc/getBookList')
+    getBookList1(@Query() qs) {
+        const res = this.bookService.getBookList({BookNumber: qs.bookNumber});
         console.log(res);
         return res;
     }

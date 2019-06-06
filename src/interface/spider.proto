@@ -1,16 +1,49 @@
 syntax = "proto3";
 
-package spider;
+package grpc;
 
-service BookSpider {
-    rpc getBookData(bookMeta) returns (bookData) {}
+service Book {
+    rpc GetBookDesc (GetBookDescReq) returns (GetBookDescResp) {}
+    rpc GetBookData (GetBookDataReq) returns (GetBookDataResp) {}
+    rpc GetBookList (GetBookListReq) returns (GetBookListResp) {}
 }
 
-message bookMeta {
-    string bookName = 1;
+message GetBookDescReq {
+    string BookName = 1;
 }
 
-message bookData {
-  int32 id = 1;
-  string bookData = 2;
+message BookDesc {
+    string BookName = 1;
+    string BookState = 2;
+    string BookIntro = 3;
+    string BookNumber = 4;
+}
+
+message GetBookDescResp {
+    repeated BookDesc BooksDesc = 1;
+}
+
+message GetBookDataReq {
+    string BookHref = 1;
+    string BookNumber = 2;
+}
+
+message GetBookDataResp {
+    string BookData = 1;
+    string BookNumber = 2; 
+}
+
+message GetBookListReq {
+    string BookNumber = 1;
+}
+
+message GetBookListResp {
+    repeated BookChapter BookList = 1;
+    string BookNumber = 2;
+}
+
+message BookChapter {
+    string Href = 1;
+    int32 Length = 2;
+    string Title = 3;
 }

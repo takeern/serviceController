@@ -4,6 +4,8 @@ package grpc;
 
 service Book {
     rpc GetBookDesc (GetBookDescReq) returns (GetBookDescResp) {}
+    rpc GetBookData (GetBookDataReq) returns (GetBookDataResp) {}
+    rpc GetBookList (GetBookListReq) returns (GetBookListResp) {}
 }
 
 message GetBookDescReq {
@@ -19,4 +21,29 @@ message BookDesc {
 
 message GetBookDescResp {
     repeated BookDesc BooksDesc = 1;
+}
+
+message GetBookDataReq {
+    string BookHref = 1;
+    string BookNumber = 2;
+}
+
+message GetBookDataResp {
+    string BookData = 1;
+    string BookNumber = 2; 
+}
+
+message GetBookListReq {
+    string BookNumber = 1;
+}
+
+message GetBookListResp {
+    repeated BookChapter BookList = 1;
+    string BookNumber = 2;
+}
+
+message BookChapter {
+    string Href = 1;
+    int32 Length = 2;
+    string Title = 3;
 }

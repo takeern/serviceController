@@ -44,6 +44,6 @@ message GetBookListResp {
 
 message BookChapter {
     string Href = 1;
-    int32 Length = 2;
+    string Length = 2;
     string Title = 3;
 }

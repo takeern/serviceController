@@ -11,7 +11,7 @@ const iconv = require('iconv-lite');
 
 interface IData {
     type: string;
-    data: any;
+    bookData: any;
 }
 
 @WebSocketGateway(4536)
@@ -44,73 +44,73 @@ export class DownloadService {
             let books = [];
             k.subscribe({
                 next: (v: IData) => {
-                    const { data, type } = v;
-                    if (type === 'test' && data.type === 'Buffer') {
-                        console.log(data.data.length);
-                        sum += data.data.length;
-                        const book: Array<any> = [];
-                        const tableIndex = []; // 章节索引
-                        let str = iconv.decode(data.data, 'gbk');
-                        if (str.length === 0) {
-                            return;
-                        }
-                        str = stash + str;
-                        stash = '';
-                        let overoffset = 0;
-
-                        for (let i = lastIndex; i < bookList.length; i++) {
-                            const offsetIndex: number = i === lastIndex ? 0 : tableIndex[tableIndex.length - 1].offset;
-                            const offset = str.indexOf(bookList[i].title, offsetIndex);
-                            if (offset === -1) {
-                                break;
-                            }
-                            tableIndex.push({
-                                offset,
-                                title: bookList[i].title,
-                                webLen: bookList[i].length,
-                            });
-                        }
-
-                        for (let i = 0; i < tableIndex.length; i++) {
-                            if (i === 0) {
-                                continue;
-                            }
-                            const lastOffset = tableIndex[i - 1].offset;
-                            const nowOffset = tableIndex[i].offset;
-                            const tableData = str.slice(lastOffset, nowOffset).replace(/(\r\n\r\n)/g, '<br />');;
-                            const tableLen = nowOffset - lastOffset;
-                            const tableOffset = i + lastIndex - 1;
-                            listState[tableOffset] = 1;
-                            book.push({
-                                title: tableIndex[i - 1].title,
-                                tableLen,
-                                webLen: tableIndex[i - 1].webLen,
-                                tableOffset,
-                                tableData,
-                            });
-                        }
-
-                        if (tableIndex.length !== 0) {
-                            overoffset = tableIndex[tableIndex.length - 1].offset;
-                            const lastStr = str.slice(overoffset);
-                            stash += lastStr;
-                            lastIndex = lastIndex + tableIndex.length - 1;
-                        }
-                        if (book.length !== 0) {
-                            books.push(book);
-                        }
-
-                        if (!timeId) {
-                            timeId = setInterval(() => {
-                                if (books.length !== 0) {
-                                    console.log('send');
-                                    books = Array.prototype.concat.apply([], books);
-                                    client.send(this.wsDataWrapper('bookData', books));
-                                    books.length = 0;
-                                }
-                            }, 1000)
-                        }
+                    console.log(v)
+                    const { bookData } = v;
+                    console.log(bookData.length);
+                    sum += bookData.length;
+                    const book: Array<any> = [];
+                    const tableIndex = []; // 章节索引
+                    let str = iconv.decode(bookData, 'gbk');
+                    if (str.length === 0) {
+                        return;
                     }
+                    str = stash + str;
+                    stash = '';
+                    let overoffset = 0;
+
+                    for (let i = lastIndex; i < bookList.length; i++) {
+                        const offsetIndex: number = i === lastIndex ? 0 : tableIndex[tableIndex.length - 1].offset;
+                        const offset = str.indexOf(bookList[i].title, offsetIndex);
+                        if (offset === -1) {
+                            break;
+                        }
+                        tableIndex.push({
+                            offset,
+                            title: bookList[i].title,
+                            webLen: bookList[i].length,
+                        });
+                    }
+
+                    for (let i = 0; i < tableIndex.length; i++) {
+                        if (i === 0) {
+                            continue;
+                        }
+                        const lastOffset = tableIndex[i - 1].offset;
+                        const nowOffset = tableIndex[i].offset;
+                        const tableData = str.slice(lastOffset, nowOffset).replace(/(\r\n\r\n)/g, '<br />');;
+                        const tableLen = nowOffset - lastOffset;
+                        const tableOffset = i + lastIndex - 1;
+                        listState[tableOffset] = 1;
+                        book.push({
+                            title: tableIndex[i - 1].title,
+                            tableLen,
+                            webLen: tableIndex[i - 1].webLen,
+                            tableOffset,
+                            tableData,
+                        });
+                    }
+
+                    if (tableIndex.length !== 0) {
+                        overoffset = tableIndex[tableIndex.length - 1].offset;
+                        const lastStr = str.slice(overoffset);
+                        stash += lastStr;
+                        lastIndex = lastIndex + tableIndex.length - 1;
+                    }
+                    if (book.length !== 0) {
+                        books.push(book);
+                    }
+
+                    if (!timeId) {
+                        timeId = setInterval(() => {
+                            if (books.length !== 0) {
+                                console.log('send');
+                                books = Array.prototype.concat.apply([], books);
+                                client.send(this.wsDataWrapper('bookData', books));
+                                books.length = 0;
+                            }
+                        }, 1000)
+                    }
+                    
                 },
                 error: (err) => console.log(err),
                 complete: () => {

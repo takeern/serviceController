@@ -30,7 +30,7 @@ export class ProxyService implements OnModuleInit {
         this.bookService = this.client.getService<BookService>('Book');
     }
 
-    getBookDesc(config: Iconfig) {
+    getBookNumber(config: Iconfig) {
         return this.bookService.getBookDesc({BookName : config.bookName});
     }
 

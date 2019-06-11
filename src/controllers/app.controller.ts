@@ -1,8 +1,6 @@
 import { Controller, Get, OnModuleInit, Query, Body, HttpStatus } from '@nestjs/common';
-import { SpiderService } from '../services/spider.service';
+import { ProxyService } from '../services/bookProxy.service';
 import { RedisService } from '../services/redis.service';
-import { SpiderOrigin } from '../interface/CONFIG.STATE';
-import { grpcClientOptions } from '../options/grpc-client.options';
 import {
     Client,
     GrpcMethod,
@@ -16,24 +14,14 @@ interface Iconfig {
 	bookHref?: string;
 }
 
-interface BookService {
-    getBookDesc(data: { BookName: string }): Observable<any>;
-    getBookList(data: { BookNumber: string }): Observable<any>;
-    getBookData(data: { BookNumber: string, BookHref: string }): Observable<any>;
-}
 
 @Controller()
-export class AppController implements OnModuleInit {
-    @Client(grpcClientOptions) private readonly client: ClientGrpc;
-    private bookService: BookService;
+export class AppController{
     constructor(
-        private readonly appService: SpiderService,
+        private readonly appService: ProxyService,
         private readonly redisService: RedisService,
-        ) {}
+    ) {}
 
-    onModuleInit() {
-        this.bookService = this.client.getService<BookService>('Book');
-    }
     async fiterData (qs: Iconfig) {
         if (qs.bookNumber) {
             return {
@@ -49,32 +37,6 @@ export class AppController implements OnModuleInit {
             } 
             return false;
         }
-    }
-
-    @Get()
-    getHello(@Query() qu) {
-        return this.appService.getHello();
-    }
-
-    @Get('grpc/getBookDesc')
-    getBookNumber1(@Query() qs) {
-        const res = this.bookService.getBookDesc({BookName: qs.bookName});
-        console.log(res);
-        return res;
-    }
-
-    @Get('grpc/getBookData')
-    getBookData1(@Query() qs) {
-        const res = this.bookService.getBookData({BookNumber: qs.bookNumber, BookHref: qs.bookHref});
-        console.log(res);
-        return res;
-    }
-
-    @Get('grpc/getBookList')
-    getBookList1(@Query() qs) {
-        const res = this.bookService.getBookList({BookNumber: qs.bookNumber});
-        console.log(res);
-        return res;
     }
 
     @Get('getBookNumber')
@@ -129,8 +91,6 @@ export class AppController implements OnModuleInit {
                 bookHref: (<any>table).bookList[0].href,
                 bookNumber: qs.bookNumber,
             });
-        } else {
-            table = 'can not find'
         }
         return {
             code: 200,

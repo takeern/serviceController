@@ -5,10 +5,19 @@ import { grpcClientOptions } from './options/grpc-client.options';
 
 const heapdump = require('heapdump');
 const memwatch = require('node-memwatch');
+const fs = require('fs');
+const path = require('path');
+
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApplicationModule);
+  // const httpsOptions = {
+  //   key: fs.readFileSync('./secrets/private-key.key'),
+  //   cert: fs.readFileSync('./secrets/public-certificate.pem'),
+  // };
+  const app = await NestFactory.create(ApplicationModule, {
+    // httpsOptions,
+  });
   app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()));
   app.connectMicroservice(grpcClientOptions);
   await app.listen(8083, '0.0.0.0');

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Transport, ClientProxyFactory } from '@nestjs/microservices';
+import { Transport, ClientProxyFactory, GrpcMethod } from '@nestjs/microservices';
 
 interface Iconfig {
 	bookName?: string;
 	bookNumber?: string;
 	bookHref?: string;
 }
+
 
 @Injectable()
 export class SpiderService {
@@ -15,6 +16,7 @@ export class SpiderService {
 				transport: Transport.TCP,
 					options: {
 						port: 5000,
+						host: '47.103.12.134',
 					},
 				});
     }
@@ -42,7 +44,10 @@ export class SpiderService {
 		const k = this.client.send(pattern, payload);
 		return new Promise((reslove, reject) => {
 			k.subscribe({
-				next: (v) => reslove(v),
+				next: (v) => {
+					const data = JSON.parse(String.fromCharCode.apply(null, v));
+					reslove(data);
+				},
 				error: (err) => reject(err),
 			})
 		});
@@ -60,7 +65,10 @@ export class SpiderService {
 		const k = this.client.send(pattern, payload);
 		return new Promise((reslove, reject) => {
 			k.subscribe({
-				next: (v: any) => reslove(v),
+				next: (v: any) => {
+					const data = JSON.parse(String.fromCharCode.apply(null, v));
+					reslove(data);
+				},
 				error: (err) => {
 					reslove(null);
 				},
@@ -82,11 +90,10 @@ export class SpiderService {
 		return new Promise((reslove, reject) => {
 			k.subscribe({
 				next: (v: any) => {
-					console.log(v);
+					v.bookData = String.fromCharCode.apply(null, v.bookData);
 					reslove(v);
 				},
 				error: (err) => reject(err),
-				complete: () => console.log('complete'),
 			})
 		});
 	}

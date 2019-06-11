@@ -100,17 +100,9 @@ export class DownloadService {
                         books.push(book);
                     }
 
-                    if (!timeId) {
-                        timeId = setInterval(() => {
-                            if (books.length !== 0) {
-                                console.log('send');
-                                books = Array.prototype.concat.apply([], books);
-                                client.send(this.wsDataWrapper('bookData', books));
-                                books.length = 0;
-                            }
-                        }, 1000)
-                    }
-                    
+                    books = Array.prototype.concat.apply([], books);
+                    client.send(this.wsDataWrapper('bookData', books));
+                    books.length = 0;
                 },
                 error: (err) => console.log(err),
                 complete: () => {
@@ -120,14 +112,11 @@ export class DownloadService {
                         title: bookList[len].title,
                         webLen: bookList[len].length,
                         tableOffset: len,
-                        tableData: stash,
                         tableLen: stash.length,
                     });
-                    clearInterval(timeId);
+                    // clearInterval(timeId);
                     client.send(this.wsDataWrapper('bookData', book));
                     client.send(this.wsDataWrapper('bookState', listState));
-                    console.log(sum);
-                    console.log('done');
                 },
             })
         }

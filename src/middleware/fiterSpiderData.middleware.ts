@@ -6,19 +6,16 @@ export class FiterDataMiddleware implements NestMiddleware {
     fiterData(data, path) {
         let msg;
         switch (path) {
-            case ('/api/getBookNumber'): {
+            case ('getBookNumber'): {
                 if (!data.bookName) {
                     msg = 'bookName is undefined';
                 }
                 break;
             }
-            case ('/api/getBookData'): {
+            case ('getBookData'): {
                 if (!data.bookHref) {
                     msg = 'bookHref is undefined';
                 }
-                break;
-            }
-            case ('/grpcTest'): {
                 break;
             }
             default: {

@@ -26,23 +26,38 @@ export class ProxyService implements OnModuleInit {
     @Client(grpcClientOptions) private readonly client: ClientGrpc;
     private bookService: BookService;
 
+    static private stringCode(k) {
+        return new Promise((reslove, reject) => {
+			k.subscribe({
+				next: (v) => {
+					const data = JSON.parse(String.fromCharCode.apply(null, v));
+					reslove(data);
+				},
+				error: (err) => reject(err),
+			});
+		});
+    }
+
     onModuleInit() {
         this.bookService = this.client.getService<BookService>('Book');
     }
 
     getBookNumber(config: Iconfig) {
-        return this.bookService.getBookDesc({BookName : config.bookName});
+        const k =  this.bookService.getBookDesc({BookName : config.bookName});
+        return ProxyService.stringCode(k);
     }
 
     getBookList(config: Iconfig) {
-        return this.bookService.getBookList({BookNumber : config.bookNumber});
+        const k =  this.bookService.getBookList({BookNumber : config.bookNumber});
+        return ProxyService.stringCode(k);
     }
 
     getBookData(config: Iconfig) {
-        return this.bookService.getBookData({
+        const k =  this.bookService.getBookData({
             BookNumber: config.bookNumber,
             BookHref: config.bookHref,
         });
+        return ProxyService.stringCode(k);
     }
 
     getBookAllData(config: Iconfig) {

@@ -47,6 +47,7 @@ export class AppController{
                 bookName: qs.bookName
             }
             bookNumber = await this.appService.getBookNumber(config);
+
             this.redisService.setBookNumber('ixspider', config.bookName, bookNumber);
         }
         return bookNumber;

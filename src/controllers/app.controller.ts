@@ -1,12 +1,6 @@
 import { Controller, Get, OnModuleInit, Query, Body, HttpStatus } from '@nestjs/common';
 import { ProxyService } from '../services/bookProxy.service';
 import { RedisService } from '../services/redis.service';
-import {
-    Client,
-    GrpcMethod,
-    ClientGrpc,
-} from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 
 interface Iconfig {
 	bookName?: string;

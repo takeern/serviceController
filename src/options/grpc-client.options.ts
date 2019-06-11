@@ -6,6 +6,6 @@ export const grpcClientOptions: ClientOptions = {
   options: {
     package: 'grpc',
     url: 'localhost: 2333',
-    protoPath: '/Users/bilibili/reading/serviceController/src/options/bookService.proto',
+    protoPath: '/home/serviceController/src/options/bookService.proto',
   },
 };

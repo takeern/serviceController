@@ -6,6 +6,7 @@ service Book {
     rpc GetBookDesc (GetBookDescReq) returns (GetBookDescResp) {}
     rpc GetBookData (GetBookDataReq) returns (GetBookDataResp) {}
     rpc GetBookList (GetBookListReq) returns (GetBookListResp) {}
+    rpc DownloadBook (DownloadBookReq) returns (stream DownloadBookResp) {}
 }
 
 message GetBookDescReq {
@@ -46,4 +47,12 @@ message BookChapter {
     string Href = 1;
     string Length = 2;
     string Title = 3;
+}
+
+message DownloadBookReq {
+    string BookNumber = 1;
+}
+
+message DownloadBookResp {
+    bytes BookData = 1;
 }

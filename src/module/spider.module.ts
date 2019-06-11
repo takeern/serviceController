@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { SpiderService } from '../services/spider.service';
+import { ProxyService } from '../services/bookProxy.service';
 
 @Module({
-    providers: [ SpiderService ],
-    exports: [ SpiderService ]
+    providers: [ ProxyService ],
+    exports: [ ProxyService ]
 })
 export class SpiderModule {}

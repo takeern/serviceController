@@ -4,12 +4,9 @@ import {
     WebSocketServer,
     WsResponse,
   } from '@nestjs/websockets';
-// import { from, Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
-import { SpiderService } from './spider.service';
+import { ProxyService } from './bookProxy.service';
 import { UlitService } from './ulit.service';
 
-const fs = require('fs');
 const iconv = require('iconv-lite');
 
 interface IData {
@@ -20,7 +17,7 @@ interface IData {
 @WebSocketGateway(4536)
 export class DownloadService {
     constructor(
-        private readonly SpiderService: SpiderService,
+        private readonly SpiderService: ProxyService,
         private readonly UlitService: UlitService,
     ) {
     }
@@ -39,7 +36,7 @@ export class DownloadService {
             const { bookList } = await this.SpiderService.getBookList({ bookNumber }) as any;
             client.send(this.wsDataWrapper('bookTable', bookList));
             let sum = 0; // buffer 长度
-            const k = this.SpiderService.getBookAllData({ bookNumber }, []);
+            const k = this.SpiderService.getBookAllData({ bookNumber });
             const listState = new Array(bookList.length).fill(0);
             let stash = '';
             let lastIndex: number = 0;

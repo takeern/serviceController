@@ -29,8 +29,8 @@ message GetBookDataReq {
 }
 
 message GetBookDataResp {
-    string BookData = 1;
-    string BookNumber = 2; 
+    string bookData = 1;
+    string bookNumber = 2; 
 }
 
 message GetBookListReq {
@@ -38,8 +38,8 @@ message GetBookListReq {
 }
 
 message GetBookListResp {
-    repeated BookChapter BookList = 1;
-    string BookNumber = 2;
+    repeated BookChapter bookList = 1;
+    string bookNumber = 2;
 }
 
 message BookChapter {

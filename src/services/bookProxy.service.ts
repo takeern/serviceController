@@ -48,20 +48,21 @@ export class ProxyService implements OnModuleInit {
     }
 
     getBookNumber(config: Iconfig) {
-        return this.bookService.getBookDesc({BookName : config.bookName});
+        const k = this.bookService.getBookDesc({BookName : config.bookName});
+        return ProxyService.stringCode(k);
     }
 
     getBookList(config: Iconfig) {
-        return this.bookService.getBookList({BookNumber : config.bookNumber});
-        // return ProxyService.stringCode(k);
+        const k = this.bookService.getBookList({BookNumber : config.bookNumber});
+        return ProxyService.stringCode(k);
     }
 
     getBookData(config: Iconfig) {
-        return this.bookService.getBookData({
+        const k = this.bookService.getBookData({
             BookNumber: config.bookNumber,
             BookHref: config.bookHref,
         });
-        // return ProxyService.stringCode(k);
+        return ProxyService.stringCode(k);
     }
 
     getBookAllData(config: Iconfig) {

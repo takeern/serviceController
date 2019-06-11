@@ -87,9 +87,9 @@ export class AppController{
     async getBookInitData(@Query() qs) {
         let table = await this.getBookList(qs);
         let bookData = null;
-        if (table && (<any>table).bookList && (<any>table).bookList.length !== 0) {
+        if (table && (<any>table).BookList && (<any>table).BookList.length !== 0) {
             bookData = await this.getBookData({
-                bookHref: (<any>table).bookList[0].href,
+                bookHref: (<any>table).BookList[0].href,
                 bookNumber: qs.bookNumber,
             });
         }

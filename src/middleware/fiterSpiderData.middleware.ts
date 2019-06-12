@@ -18,6 +18,7 @@ export class FiterDataMiddleware implements NestMiddleware {
                 }
                 break;
             }
+            // case ('/get')
             default: {
                 if (!data.bookNumber) {
                     msg = 'bookNumber is undefined';

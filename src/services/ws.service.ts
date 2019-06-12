@@ -44,9 +44,7 @@ export class DownloadService {
             let books = [];
             k.subscribe({
                 next: (v: IData) => {
-                    console.log(v)
                     const { bookData } = v;
-                    console.log(bookData.length);
                     sum += bookData.length;
                     const book: Array<any> = [];
                     const tableIndex = []; // 章节索引

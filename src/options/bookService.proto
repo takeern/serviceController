@@ -18,6 +18,7 @@ message BookDesc {
     string bookState = 2;
     string bookIntro = 3;
     string bookNumber = 4;
+    string bookAuthor = 5;
 }
 
 message GetBookDescResp {
